@@ -1,0 +1,171 @@
+Import pandas and read in the Ecommerce Purchases csv file and set it to a DataFrame called ecom.
+
+[1]
+0s
+
+import pandas as pd
+
+[2]
+0s
+ecom = pd.read_csv('Ecommerce Purchases')
+Check the head of the DataFrame.
+
+[3]
+0s
+ecom.head()
+
+How many rows and columns are there
+
+[4]
+0s
+ecom.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 10000 entries, 0 to 9999
+Data columns (total 14 columns):
+ #   Column            Non-Null Count  Dtype  
+---  ------            --------------  -----  
+ 0   Address           10000 non-null  object 
+ 1   Lot               10000 non-null  object 
+ 2   AM or PM          10000 non-null  object 
+ 3   Browser Info      10000 non-null  object 
+ 4   Company           10000 non-null  object 
+ 5   Credit Card       10000 non-null  int64  
+ 6   CC Exp Date       10000 non-null  object 
+ 7   CC Security Code  10000 non-null  int64  
+ 8   CC Provider       10000 non-null  object 
+ 9   Email             10000 non-null  object 
+ 10  Job               10000 non-null  object 
+ 11  IP Address        10000 non-null  object 
+ 12  Language          10000 non-null  object 
+ 13  Purchase Price    10000 non-null  float64
+dtypes: float64(1), int64(2), object(11)
+memory usage: 1.1+ MB
+What is the average Purchase Price
+
+[5]
+0s
+ecom['Purchase Price'].mean()
+50.347302
+What were the highest and lowest purchase prices
+
+[6]
+0s
+ecom['Purchase Price'].max()
+99.99
+How many people have English 'en' as their Language of choice on the website
+
+[7]
+0s
+ecom[ecom['Language'] == 'en'].count()
+Address             1098
+Lot                 1098
+AM or PM            1098
+Browser Info        1098
+Company             1098
+Credit Card         1098
+CC Exp Date         1098
+CC Security Code    1098
+CC Provider         1098
+Email               1098
+Job                 1098
+IP Address          1098
+Language            1098
+Purchase Price      1098
+dtype: int64
+How many people have the job title of "Lawyer"
+
+[8]
+0s
+ecom[ecom['Job'] == 'Lawyer'].count()
+Address             30
+Lot                 30
+AM or PM            30
+Browser Info        30
+Company             30
+Credit Card         30
+CC Exp Date         30
+CC Security Code    30
+CC Provider         30
+Email               30
+Job                 30
+IP Address          30
+Language            30
+Purchase Price      30
+dtype: int64
+How many people made the purchase during the AM and how many people made the purchase during PM
+
+[9]
+0s
+ecom['AM or PM'].value_counts()
+PM    5068
+AM    4932
+Name: AM or PM, dtype: int64
+What are the 5 most common Job Titles?
+
+[10]
+0s
+ecom['Job'].value_counts().head(5)
+Interior and spatial designer    31
+Lawyer                           30
+Social researcher                28
+Purchasing manager               27
+Designer, jewellery              27
+Name: Job, dtype: int64
+Someone made a purchase that came from Lot: "90 WT" , what was the Purchase Price for this transaction?
+
+[11]
+0s
+ecom[ecom['Lot'] == '90 WT']['Purchase Price']
+513    75.1
+Name: Purchase Price, dtype: float64
+What is the email of the person with the following Credit Card Number: 4926535242672853
+
+[12]
+0s
+ecom[ecom['Credit Card'] == 4926535242672853]['Email']
+1234    bondellen@williams-garza.com
+Name: Email, dtype: object
+How many people have American Express as their Credit Card Provider *and made a purchase above $95
+
+[13]
+0s
+ecom[(ecom['CC Provider'] == 'American Express') & (ecom['Purchase Price'] > 95)].count()
+Address             39
+Lot                 39
+AM or PM            39
+Browser Info        39
+Company             39
+Credit Card         39
+CC Exp Date         39
+CC Security Code    39
+CC Provider         39
+Email               39
+Job                 39
+IP Address          39
+Language            39
+Purchase Price      39
+dtype: int64
+How many people have a credit card that expires in 2025
+
+[14]
+0s
+ecom[ecom['CC Exp Date'].str.contains('25')].count()[0]
+1033
+What are the top 5 most popular email providers/hosts (e.g. gmail.com, yahoo.com, etc...)
+
+[15]
+0s
+def format_email(email):
+    return email.split('@')[1]
+
+#format_email('user@gmail.com')
+
+ecom['hosts'] = ecom['Email']
+ecom['hosts'] = ecom['hosts'].apply(lambda s: format_email(s))
+ecom['hosts'].value_counts().head(5)
+hotmail.com     1638
+yahoo.com       1616
+gmail.com       1605
+smith.com         42
+williams.com      37
+Name: hosts, dtype: int64
