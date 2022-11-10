@@ -1,0 +1,20 @@
+import spacy 
+nlp=spacy.load("en_core_web_sm")
+doc=nlp("you can eat your cake with a spoon or fork?")
+for token in doc:
+    print('{} - {}'.format(token,token.pos_))
+    
+    //output
+    you - PRON
+can - AUX
+eat - VERB
+your - PRON
+cake - NOUN
+with - ADP
+a - DET
+spoon - NOUN
+or - CCONJ
+  - SPACE
+hello - INTJ
+fork - NOUN
+? - PUNCT
